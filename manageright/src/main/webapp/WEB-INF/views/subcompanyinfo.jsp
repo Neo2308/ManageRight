@@ -14,9 +14,7 @@
 
 <jsp:body>
     <!-- <c:out value="Hello"></c:out> -->
-    <h1>Welcome Admin</h1>
-    <hr size="4" color="gray" />
-    <h2>SubCompany</h2>
+    <h2><b>SubCompany Details</b></h2>
     <div id="subcompanyinfo">
             <!--<p>
                 <label>Username</label>
@@ -38,13 +36,13 @@
 
             </p>-->
             <p><span class="infolabel">
-                    Company ID </span><span class="infolabel">${obj.getCompany_ID()}
-            </span></p><span class="infolabel">
+                    Company ID </span><span class="infovalue">${obj.getCompany_ID()}
+            </span></p>
             <p><span class="infolabel">
-                    Company Name</span><span class="infolabel">${obj.getCompanyName()}
-            </span></p><span class="infolabel">
+                    Company Name</span><span class="infovalue">${obj.getCompanyName()}
+            </span></p>
             <p><span class="infolabel">
-                    Head Office</span><span class="infolabel">${obj.getHeadOffice()}
+                    Head Office</span><span class="infovalue">${obj.getHeadOffice()}
             </span></p>
             <p>
             <button onclick="location.href='/Admin/setcompanydept/${obj.getCompany_ID()}'">Add Department</button>
