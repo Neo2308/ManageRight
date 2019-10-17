@@ -268,6 +268,34 @@ public class HRController{
         employmentdao.update(employment);
         return "redirect:/HR/employment/"+eid;
     }
+    @GetMapping("/setempcolleagues/{eid}")
+    public String setempcolleaguesdept1(@PathVariable("eid") int eid,Model model)
+    {
+        boolean f = employmentdao.isEmployed(eid);
+        if(f)
+        {
+            String sql="SELECT * FROM DepartmentsAvailable WHERE Company_ID IN(SELECT Company_ID FROM Office,Employee WHERE Employee_ID=? AND Office_ID=Employee.WorksFor)";
+            List<Map<String, Object>> lst = template.queryForList(sql,eid);
+            for(Map<String,Object> i:lst)
+            {
+                i.put("nextlink","/HR/setempdept/"+eid+"/"+i.get("Departments"));
+                i.put("nextlinktext","Set");
+            }
+            model.addAttribute("departments",lst);
+        }
+        return "showdepartments";
+    }
+    @GetMapping("/setempdept/{eid}/{dept}")
+    public String setempdept2(@PathVariable("eid") int eid,@PathVariable("dept") String dept,Model model)
+    {
+        boolean f = employmentdao.isEmployed(eid);
+        if(f)
+        {
+            Employment employment=employmentdao.getEmployment(eid);
+            employmentdao.changedepartment(employment.getEmployment_ID(), dept);
+        }
+        return "redirect:/HR/employee/"+eid;
+    }
     @GetMapping("/setempdept/{eid}")
     public String setempdept1(@PathVariable("eid") int eid,Model model)
     {
@@ -347,7 +375,7 @@ public class HRController{
     public String showholidays( Model model) {
         String sql = "SELECT CalendarHoliday.Holiday_ID as Holiday_ID,CalendarHoliday.Name as HolidayName,StartDate,EndDate,Region.Name as RegionName FROM CalendarHoliday,ApplicableAt,Region WHERE CalendarHoliday.Holiday_ID=ApplicableAt.Holiday_ID AND ApplicableAt.Region_ID=Region.Region_ID";
         List<Map<String, Object>> lst = template.queryForList(sql);
-        
+
         model.addAttribute("holidays", lst);
         return "showholidays";
     }
